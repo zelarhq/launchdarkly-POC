@@ -1,19 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import { StrictMode, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
+import { LDProvider, useLDClient } from 'launchdarkly-react-client-sdk';
+import { LaunchDarklyProvider } from './contexts/LaunchDarklyContext';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// Initial user context
+const initialContext = {
+  kind: 'user' as const,
+  key: 'anonymous',
+  anonymous: true,
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// The clientSideID is your SDK key.
+createRoot(document.getElementById('root') as HTMLElement).render(
+  <StrictMode>
+    <LDProvider 
+      clientSideID="68622e4fd2d588093c750dcf"
+      context={initialContext}
+      options={{
+        bootstrap: 'localStorage',
+        sendEvents: process.env.NODE_ENV === 'production',
+        logger: {
+          debug: (message: string) => console.debug('[LaunchDarkly]', message),
+          info: (message: string) => console.info('[LaunchDarkly]', message),
+          warn: (message: string) => console.warn('[LaunchDarkly]', message),
+          error: (message: string) => console.error('[LaunchDarkly]', message),
+        },
+      }}
+    >
+      <LaunchDarklyProvider>
+        <App />
+      </LaunchDarklyProvider>
+    </LDProvider>
+  </StrictMode>
+);

@@ -1,23 +1,105 @@
-# Getting Started with Create React App
+# Cloud Service Dashboard with LaunchDarkly
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a Proof of Concept (POC) application that demonstrates how to use LaunchDarkly feature flags to toggle between different cloud service providers (GCP, AWS, Azure) in a React application.
+
+## Features
+
+- **Feature Flags**: Toggle cloud services on/off using LaunchDarkly
+- **User Segmentation**: Different features for different user segments (internal/external)
+- **Real-time Updates**: Changes in LaunchDarkly reflect immediately in the app
+- **Responsive Design**: Works on desktop and mobile devices
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- npm (v6 or higher)
+- A LaunchDarkly account with a client-side ID
+
+## Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd launchdarkly-cloud-poc
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure LaunchDarkly**
+   - Create a new project in LaunchDarkly
+   - Create three feature flags:
+     - `gcp-enabled` (boolean)
+     - `aws-enabled` (boolean)
+     - `azure-enabled` (boolean)
+   - Create user segments (e.g., internal users, external users)
+   - Set up targeting rules based on user attributes
+
+4. **Configure the application**
+   - Copy `.env.example` to `.env`
+   - Update the LaunchDarkly client ID in `.env`
+
+5. **Start the development server**
+   ```bash
+   npm start
+   ```
+   The application will be available at [http://localhost:3000](http://localhost:3000)
+
+## Project Structure
+
+- `src/App.tsx` - Main application component with LaunchDarkly integration
+- `src/App.css` - Styling for the application
+- `src/index.tsx` - Application entry point
+
+## LaunchDarkly Configuration
+
+### Feature Flags
+
+1. **gcp-enabled**
+   - Type: Boolean
+   - Description: Controls the visibility of GCP services
+   - Default: false
+
+2. **aws-enabled**
+   - Type: Boolean
+   - Description: Controls the visibility of AWS services
+   - Default: false
+
+3. **azure-enabled**
+   - Type: Boolean
+   - Description: Controls the visibility of Azure services
+   - Default: false
+
+### User Segments
+
+1. **Internal Users**
+   - Rule: User email ends with "@yourcompany.com"
+   - Access: All features enabled
+
+2. **External Users**
+   - Rule: All other users
+   - Access: Features enabled based on targeting rules
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+REACT_APP_LAUNCHDARKLY_CLIENT_ID=your-client-side-id
+```
 
 ## Available Scripts
 
-In the project directory, you can run:
+- `npm start` - Start the development server
+- `npm test` - Run tests
+- `npm run build` - Build the application for production
+- `npm run eject` - Eject from Create React App (advanced)
 
-### `npm start`
+## License
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This project is licensed under the MIT License.
 
 ### `npm run build`
 
