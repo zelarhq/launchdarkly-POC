@@ -1,44 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { useLaunchDarkly } from './hooks/useLaunchDarkly';
 import { useLaunchDarklyContext } from './contexts/LaunchDarklyContext';
+import GCPDetails from './components/GCPDetails';
+import AWSDetails from './components/AWSDetails';
+import AzureDetails from './components/AzureDetails';
+import { BrowserRouter as Router, Routes, Route, Link, useParams } from 'react-router-dom';
 import './App.css';
 
 // Cloud Service Components
-const GCPService = () => (
-  <div className="service gcp">
-    <h2>Google Cloud Platform</h2>
-    <p>GCP services are currently active.</p>
-    <ul>
-      <li>Compute Engine</li>
-      <li>Cloud Storage</li>
-      <li>Cloud SQL</li>
-    </ul>
-  </div>
-);
+const GCPService = () => {
+  const { flags } = useLaunchDarkly();
+  
+  return (
+    <div className="service gcp">
+      <h2>Google Cloud Platform</h2>
+      <p>GCP services are currently active.</p>
+      <ul>
+        <li>Compute Engine</li>
+        <li>Cloud Storage</li>
+        <li>Cloud SQL</li>
+      </ul>
+      {flags['gcpDetailsEnabled'] ? (
+        <Link to="/gcp-details" className="details-button">View GCP Details</Link>
+      ) : (
+        <span className="details-button disabled">View GCP Details</span>
+      )}
+    </div>
+  );
+};
 
-const AWSService = () => (
-  <div className="service aws">
-    <h2>Amazon Web Services</h2>
-    <p>AWS services are currently active.</p>
-    <ul>
-      <li>EC2</li>
-      <li>S3</li>
-      <li>RDS</li>
-    </ul>
-  </div>
-);
+const AWSService = () => {
+  const { flags } = useLaunchDarkly();
+  
+  return (
+    <div className="service aws">
+      <h2>Amazon Web Services</h2>
+      <p>AWS services are currently active.</p>
+      <ul>
+        <li>EC2</li>
+        <li>S3</li>
+        <li>RDS</li>
+      </ul>
+      {flags['awsDetailsEnabled'] ? (
+        <Link to="/aws-details" className="details-button">View AWS Details</Link>
+      ) : (
+        <span className="details-button disabled">View AWS Details</span>
+      )}
+    </div>
+  );
+};
 
-const AzureService = () => (
-  <div className="service azure">
-    <h2>Microsoft Azure</h2>
-    <p>Azure services are currently active.</p>
-    <ul>
-      <li>Virtual Machines</li>
-      <li>Blob Storage</li>
-      <li>SQL Database</li>
-    </ul>
-  </div>
-);
+const AzureService = () => {
+  const { flags } = useLaunchDarkly();
+  
+  return (
+    <div className="service azure">
+      <h2>Microsoft Azure</h2>
+      <p>Azure services are currently active.</p>
+      <ul>
+        <li>Virtual Machines</li>
+        <li>Blob Storage</li>
+        <li>SQL Database</li>
+      </ul>
+      {flags['azureDetailsEnabled'] ? (
+        <Link to="/azure-details" className="details-button">View Azure Details</Link>
+      ) : (
+        <span className="details-button disabled">View Azure Details</span>
+      )}
+    </div>
+  );
+};
 
 const CloudServiceSelector = () => {
   const { setUser } = useLaunchDarklyContext();
@@ -142,10 +173,17 @@ console.log('Environment Variables:', {
 
 // Main App component
 const App = () => {
-  // Get the LaunchDarkly client ID from environment variables
-  //const clientId = process.env.REACT_APP_LAUNCHDARKLY_CLIENT_ID || 'YOUR_LAUNCHDARKLY_CLIENT_ID';
   return (
-    <CloudServiceSelector />
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<CloudServiceSelector />} />
+          <Route path="/gcp-details" element={<GCPDetails />} />
+          <Route path="/aws-details" element={<AWSDetails />} />
+          <Route path="/azure-details" element={<AzureDetails />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 

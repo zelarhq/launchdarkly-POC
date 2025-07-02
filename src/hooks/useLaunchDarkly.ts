@@ -23,6 +23,9 @@ export const useLaunchDarkly = () => {
     gcpEnabled: flags['gcpEnabled'] as boolean || false,
     awsEnabled: flags['awsEnabled'] as boolean || false,
     azureEnabled: flags['azureEnabled'] as boolean || false,
+    gcpDetailsEnabled: flags['gcpDetailsEnabled'] as boolean || false,
+    awsDetailsEnabled: flags['awsDetailsEnabled'] as boolean || false,
+    azureDetailsEnabled: flags['azureDetailsEnabled'] as boolean || false,
   };
 
   console.log('Mapped flags:', mappedFlags);
